@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="interface.css" /> 
+		<title>The Ages of Civilizations</title>
+	</head>
+	<body>
+		<div id="header">
+			Ages of Civilizations by TechMirage
+		</div>
+		<div class="wrapper">
+			<div class="BasicResourcesTab">
+				<button onclick="logsClick(1)">Chop Trees</button>
+				Logs: <span id="logs">0</span>
+				<br />
+				<button onclick="foodClick(1)">Gather Food</button>
+				Food: <span id="food">30</span>
+			</div>
+			<div class="BuildingTab">
+				<button onclick="buyHut()">Buy Hut</button>
+				<br />
+				Huts: <span id="huts">4</span>
+				<br />
+				Hut Cost: <span id="hutCost">10</span> logs
+			</div>
+			<div class="WorkersTab">
+				Idle Villagers: <span id="idleVillagers">4</span>
+				<br />
+				Loggers: <span id="loggers">0</span>
+				<button onclick="assignWorker('loggers',1)">Assign Logger</button><button onclick="assignWorker('loggers', -1)">Remove Logger</button>
+				<br />
+				Hunters: <span id="hunters">4</span>
+				<button onclick="assignWorker('hunters',1)">Assign Hunter</button><button onclick="assignWorker('hunters', -1)">Remove Hunter</button>				
+			</div>
+		</div>
+		<script src="js/main.js"></script>
+	</body>
+</html>
