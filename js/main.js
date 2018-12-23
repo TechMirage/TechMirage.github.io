@@ -25,6 +25,14 @@ function foodClick(number){
     document.getElementById("food").innerHTML = food;
 };
 
+function villagerGrow(){
+	childToCreate = 0
+    childAttempted = Math.floor(totalVillagers() / 2);
+    childToCreate = Math.min(childAttempted, ((huts*2) - totalVillagers()));
+	idleVillagers = idleVillagers + childToCreate;
+	document.getElementByID('idleVillagers').innerHTML = idleVillagers;
+};
+
 var cursors = 0;
 
 function buyHut(){
@@ -64,5 +72,6 @@ window.setInterval(function(){
 	
 	logsClick(loggers);
 	foodClick((hunters*huntGatherMultiplier) - totalVillagers());
+	villagerGrow();
 	
 }, 1000);
