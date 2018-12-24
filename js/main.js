@@ -13,39 +13,45 @@ var huts = 4; // Start with 4 huts to accommodate your starting tribesman/woman.
 // Technology Multipliers
 var huntGatherMultiplier = 2;
 
-// What happens when you click the gathering buttons? 
+// What happens when you click the gathering buttons?
 
 function logsClick(number){
-    logs = logs + number;
-    document.getElementById("logs").innerHTML = logs;
-};
+  logs = logs + number;
+  document.getElementById('logs').innerHTML = logs;
+}
 
 function foodClick(number){
-    food = food + number;
-    document.getElementById("food").innerHTML = food;
-};
+  food = food + number;
+  document.getElementById('food').innerHTML = food;
+}
 
+// Creating more villagers to fill available space.
+// TODO: randomize the number gained per turn.
 function villagerGrow(){
-	childToCreate = 0
-    childAttempted = Math.floor(totalVillagers() / 2);
-    childToCreate = Math.min(childAttempted, ((huts*2) - totalVillagers()));
-	idleVillagers = idleVillagers + childToCreate;
+	childToCreate = 0;
+	// Check to see if we can grow more villagers to fit into available housing space.
+	// If so, start filling it in until you reach the housing max, unless you have negative food.
+	if (totalHouseSpace() !== totalVillagers() && food >= 0) {
+    childAttempted = Math.floor(totalVillagers() / 4);
+    childToCreate = Math.min(childAttempted, (totalHouseSpace() - totalVillagers()));
+  	idleVillagers = idleVillagers + childToCreate;
+	}
 	document.getElementById('idleVillagers').innerHTML = idleVillagers;
-};
+}
 
 var cursors = 0;
 
 function buyHut(){
-    var hutCost = Math.floor(10 * Math.pow(1.1,(huts-4)));     	// (don't count the first four of the playthrough)
-    if(logs >= hutCost){                                   		
-        huts = huts + 1;                                   
-    	logs = logs - hutCost;                          			
-        document.getElementById('huts').innerHTML = huts;  	
-        document.getElementById('logs').innerHTML = logs;  			
-    };
-    var nextCost = Math.floor(10 * Math.pow(1.1,huts));       
-    document.getElementById('hutCost').innerHTML = nextCost;  
-};
+  var hutCost = Math.floor(10 * Math.pow(1.1,(huts-4)));     	// (don't count the first four of the playthrough)
+  if (logs >= hutCost){
+    huts = huts + 1;
+  	logs = logs - hutCost;
+    document.getElementById('huts').innerHTML = huts;
+    document.getElementById('logs').innerHTML = logs;
+  }
+  var nextCost = Math.floor(10 * Math.pow(1.1,huts));
+  document.getElementById('hutCost').innerHTML = nextCost;
+}
 
 function assignWorker(job, number){
 	if ((idleVillagers - number) >= 0){
@@ -54,7 +60,7 @@ function assignWorker(job, number){
 			loggers = loggers + number;
 			document.getElementById('loggers').innerHTML = loggers;
 		}
-		else if(job == 'hunters' && (hunters + number) >= 0) {
+		else if (job === 'hunters' && (hunters + number) >= 0) {
 			idleVillagers = idleVillagers - number;
 			hunters = hunters + number;
 			document.getElementById('hunters').innerHTML = hunters;
@@ -64,14 +70,56 @@ function assignWorker(job, number){
 
 }
 
+// As it turns out, villagers can't live without food and will start dying.
+// Priority list for Death: Idle > non-food workers > food gatherers
+function killVillagers(number){
+  var numToDie = number;
+  if (idleVillagers >= 0) {
+    if (numToDie - idleVillagers >= 0) {
+      idleVillagers = idleVillagers - numToDie;
+    } else {
+      numToDie = numToDie - idleVillagers;
+      idleVillagers = 0;
+    }
+  } else if (numToDie > 0 && loggers >= 0) {
+    if (numToDie - loggers >= 0) {
+      loggers = loggers - numToDie;
+    } else {
+      numToDie = numToDie - loggers;
+      loggers = 0;
+    }
+  } else if (numToDie > 0 && hunters >= 0) {
+    if (numToDie - hunters >= 0) {
+      hunters = hunters - numToDie;
+    } else {
+      numToDie = numToDie - hunters;
+      hunters = 0;
+    }
+  }
+  document.getElementById('idleVillagers').innerHTML = idleVillagers;
+  document.getElementById('loggers').innerHTML = loggers;
+  document.getElementById('hunters').innerHTML = hunters;
+}
+
+// Some useful totalling functions
+
 function totalVillagers() {
 	return idleVillagers + hunters + loggers;
 }
+
+function totalHouseSpace() {
+  return (huts * 2);
+}
+
+// Main game loop... triggers every second.
 
 window.setInterval(function(){
 	
 	logsClick(loggers);
 	foodClick((hunters*huntGatherMultiplier) - totalVillagers());
 	villagerGrow();
+	if (food < 0) {
+	  killVillagers(4);
+	}
 	
 }, 1000);
