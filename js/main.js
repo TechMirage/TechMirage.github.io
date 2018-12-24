@@ -30,7 +30,7 @@ function foodClick(number){
 
 // Creating more villagers to fill available space.
 // TODO: randomize the number gained per turn.
-function villagerGrow(){
+function growVillagers(){
 	childToCreate = 0;
 	// Check to see if we can grow more villagers to fit into available housing space.
 	// If so, start filling it in until you reach the housing max, unless you have negative food.
@@ -80,7 +80,7 @@ function assignWorker(job, number){
 // Priority list for Death: Idle > non-food workers > food gatherers
 function killVillagers(number){
   var numToDie = number;
-  if (idleVillagers >= 0) {
+  if (idleVillagers > 0) {
     console.log('idle villagers to kill')
     if (numToDie - idleVillagers >= 0) {
       idleVillagers = idleVillagers - numToDie;
@@ -89,7 +89,7 @@ function killVillagers(number){
       numToDie = numToDie - idleVillagers;
       idleVillagers = 0;
     }
-  } else if (numToDie > 0 && loggers >= 0) {
+  } else if (numToDie > 0 && loggers > 0) {
     console.log('loggers to kill')
     if (numToDie - loggers >= 0) {
       loggers = loggers - numToDie;
@@ -98,7 +98,7 @@ function killVillagers(number){
       numToDie = numToDie - loggers;
       loggers = 0;
     }
-  } else if (numToDie > 0 && hunters >= 0) {
+  } else if (numToDie > 0 && hunters > 0) {
     console.log('hunters to kill')
     if (numToDie - hunters >= 0) {
       hunters = hunters - numToDie;
@@ -129,6 +129,6 @@ window.setInterval(function(){
 	
 	logsClick(loggers);
 	foodClick((hunters*huntGatherMultiplier) - totalVillagers());
-	villagerGrow();
+	growVillagers();
 	
 }, 1000);
