@@ -22,6 +22,9 @@ function logsClick(number){
 
 function foodClick(number){
   food = food + number;
+  if (food < 0) {
+    food = 0;
+  }
   document.getElementById('food').innerHTML = food;
 }
 
@@ -35,8 +38,11 @@ function villagerGrow(){
     childAttempted = Math.floor(totalVillagers() / 4);
     childToCreate = Math.min(childAttempted, (totalHouseSpace() - totalVillagers()));
   	idleVillagers = idleVillagers + childToCreate;
+		document.getElementById('idleVillagers').innerHTML = idleVillagers;
 	}
-	document.getElementById('idleVillagers').innerHTML = idleVillagers;
+	if (food === 0) {
+	  killVillagers(4);
+	}
 }
 
 var cursors = 0;
@@ -75,23 +81,29 @@ function assignWorker(job, number){
 function killVillagers(number){
   var numToDie = number;
   if (idleVillagers >= 0) {
+    console.log('idle villagers to kill')
     if (numToDie - idleVillagers >= 0) {
       idleVillagers = idleVillagers - numToDie;
     } else {
+      console.log('not enough though')
       numToDie = numToDie - idleVillagers;
       idleVillagers = 0;
     }
   } else if (numToDie > 0 && loggers >= 0) {
+    console.log('loggers to kill')
     if (numToDie - loggers >= 0) {
       loggers = loggers - numToDie;
     } else {
+      console.log('not enough though')
       numToDie = numToDie - loggers;
       loggers = 0;
     }
   } else if (numToDie > 0 && hunters >= 0) {
+    console.log('hunters to kill')
     if (numToDie - hunters >= 0) {
       hunters = hunters - numToDie;
     } else {
+      console.log('not enough though????')
       numToDie = numToDie - hunters;
       hunters = 0;
     }
@@ -118,8 +130,5 @@ window.setInterval(function(){
 	logsClick(loggers);
 	foodClick((hunters*huntGatherMultiplier) - totalVillagers());
 	villagerGrow();
-	if (food < 0) {
-	  killVillagers(4);
-	}
 	
 }, 1000);
