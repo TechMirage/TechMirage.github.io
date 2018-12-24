@@ -85,7 +85,7 @@ function killVillagers(number){
     if (numToDie - idleVillagers > 0) {
       idleVillagers = idleVillagers - numToDie;
     } else {
-      console.log('not enough though')
+      console.log('not enough though' + numToDie)
       numToDie = numToDie - idleVillagers;
       idleVillagers = 0;
     }
