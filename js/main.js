@@ -82,7 +82,7 @@ function killVillagers(number){
   var numToDie = number;
   if (idleVillagers > 0) {
     console.log('idle villagers to kill')
-    if (numToDie - idleVillagers >= 0) {
+    if (numToDie - idleVillagers > 0) {
       idleVillagers = idleVillagers - numToDie;
     } else {
       console.log('not enough though')
@@ -91,7 +91,7 @@ function killVillagers(number){
     }
   } else if (numToDie > 0 && loggers > 0) {
     console.log('loggers to kill')
-    if (numToDie - loggers >= 0) {
+    if (numToDie - loggers > 0) {
       loggers = loggers - numToDie;
     } else {
       console.log('not enough though')
@@ -100,7 +100,7 @@ function killVillagers(number){
     }
   } else if (numToDie > 0 && hunters > 0) {
     console.log('hunters to kill')
-    if (numToDie - hunters >= 0) {
+    if (numToDie - hunters > 0) {
       hunters = hunters - numToDie;
     } else {
       console.log('not enough though????')
