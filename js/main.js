@@ -30,7 +30,7 @@ function villagerGrow(){
     childAttempted = Math.floor(totalVillagers() / 2);
     childToCreate = Math.min(childAttempted, ((huts*2) - totalVillagers()));
 	idleVillagers = idleVillagers + childToCreate;
-	document.getElementByID('idleVillagers').innerHTML = idleVillagers;
+	document.getElementById('idleVillagers').innerHTML = idleVillagers;
 };
 
 var cursors = 0;
